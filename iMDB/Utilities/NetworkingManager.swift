@@ -24,29 +24,14 @@ class NetworkingManager {
         }
     }
     
-    static func getMoviesByTitle(url: URL) -> AnyPublisher<Data, Error> {
+    static func download(url: URL) -> AnyPublisher<Data, Error> {
         var request = URLRequest(url: url, timeoutInterval: Double.infinity)
-        request.addValue("cbeb71527dmsh9bcb576649d1186p11b4e2jsn7c2efe053461", forHTTPHeaderField: "X-RapidAPI-Key")
-        request.addValue("movies-tv-shows-database.p.rapidapi.com", forHTTPHeaderField: "X-RapidAPI-Host")
-        request.addValue("get-movies-by-title", forHTTPHeaderField: "Type")
-
+        request.addValue("cbeb71527dmsh9bcb576649d1186p11b4e2jsn7c2efe053461", forHTTPHeaderField: "accept")
+        request.addValue("Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlZTAzYTc3NjIxYjdhMWRhZmFjNTMxYmUzYzRkNzgxZSIsInN1YiI6IjY1ZGYyMzNlOGU4NzAyMDE4NDA0ZTVhOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.fSJ1iS2d5yxcgbH2IV2T0dXEgqd-EG8_18S-B9Lg2-w", forHTTPHeaderField: "Authorization")
         request.httpMethod = "GET"
         
         return URLSession.shared.dataTaskPublisher(for: request)
-            .tryMap({ try handleURLResponse(output: $0, url: url)})
-            .eraseToAnyPublisher()
-    }
-    
-    static func getMovieDetails(url: URL) -> AnyPublisher<Data, Error> {
-        var request = URLRequest(url: url, timeoutInterval: Double.infinity)
-        request.addValue("cbeb71527dmsh9bcb576649d1186p11b4e2jsn7c2efe053461", forHTTPHeaderField: "X-RapidAPI-Key")
-        request.addValue("movies-tv-shows-database.p.rapidapi.com", forHTTPHeaderField: "X-RapidAPI-Host")
-        request.addValue("get-movie-details", forHTTPHeaderField: "Type")
-            
-        request.httpMethod = "GET"
-        
-        return URLSession.shared.dataTaskPublisher(for: request)
-            .tryMap({ try handleURLResponse(output: $0, url: url)})
+            .tryMap({ try handleURLResponse(output: $0, url: url) })
             .eraseToAnyPublisher()
     }
     

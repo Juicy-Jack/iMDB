@@ -10,13 +10,28 @@ import SwiftUI
 struct MovieRowView: View {
     let movie: Movie
     var body: some View {
-        Text(movie.title)
+        HStack {
+            if let posterPath = movie.posterPath {
+                AsyncImage(
+                    url: URL(string: "https://image.tmdb.org/t/p/original\(posterPath)"),
+                    content: { image in
+                        image
+                            .resizable()
+                            .scaledToFit()
+                            .frame(maxWidth: 70)
+                    }, placeholder: {
+                        ProgressView()
+                    })
+            }
+            Text(movie.title ?? "")
+        }
     }
 }
 
 #Preview {
     Group {
         let vm = HomeViewModel()
-        MovieRowView(movie: vm.exampleTitle)
+        MovieRowView(movie: vm.exampleMovie)
     }
 }
+

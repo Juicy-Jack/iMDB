@@ -30,12 +30,19 @@ struct MovieDetailVeiw: View {
     
     var body: some View {
         VStack {
-            Text(vm.movieDetails?.description ?? "")
-            if let genres = vm.movieDetails?.genres {
-                ForEach(genres, id: \.self) { genre in
-                    Text(genre)
+            if (vm.videos != nil) {
+                if !vm.videos!.results!.isEmpty {
+                    let trailerKey = vm.videos?.results?[0].key
+                    YTVideo(videoID: (trailerKey!))
                 }
             }
+            Text(vm.movieDetail?.overview ?? "")
+            if let genres = vm.movieDetail?.genres {
+                ForEach(genres, id: \.name) { genre in
+                    Text(genre.name ?? "")
+                }
+            }
+
         }
         }
     }
@@ -44,6 +51,7 @@ struct MovieDetailVeiw: View {
 #Preview {
     Group {
         let vm = HomeViewModel()
-        MovieDetailVeiw(movie: vm.exampleTitle)
+        MovieDetailVeiw(movie: vm.exampleMovie)
     }
 }
+
