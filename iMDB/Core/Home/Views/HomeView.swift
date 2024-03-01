@@ -17,19 +17,30 @@ struct HomeView: View {
     var body: some View {
         VStack {
             HStack {
+                Image(systemName: "magnifyingglass")
+                    .padding(.leading)
+                    .foregroundStyle(vm.searchText.isEmpty ? Color.secondary : Color.accentColor)
+
                 TextField("Search Film", text: $vm.searchText)
                     .foregroundStyle(.white)
                     .padding()
-                    .background(
-                        RoundedRectangle(cornerRadius: 25.0)
-                            .foregroundStyle(.gray)
-                    )
-                Button {
-                    vm.search()
-                } label: {
-                    Image(systemName: "magnifyingglass")
-                }
+                    .overlay(
+                        Image(systemName: "xmark.circle.fill")
+                            .padding()
+                            .offset(x: 10)
+                            .opacity(vm.searchText.isEmpty ? 0 : 1)
+                            .onTapGesture {
+                                vm.searchText = ""
+                            }
+                        ,alignment: .trailing)
             }
+            .background(
+                RoundedRectangle(cornerRadius: 25.0)
+                    .foregroundStyle(.gray)
+            )
+            .padding()
+
+            
             allMoviesList
         }
         .background(
@@ -47,16 +58,20 @@ struct HomeView: View {
 
 extension HomeView {
     private var allMoviesList: some View {
-        List {
-            ForEach (vm.allMovies) { movie in
-                MovieRowView(movie: movie)
-                    .listRowInsets(.init(top: 10, leading: 0, bottom: 10, trailing: 10))
-                    .onTapGesture {
-                        segue(movie: movie)
-                    }
+        GeometryReader { geo in
+            List {
+                ForEach (vm.allMovies) { movie in
+                    MovieRowView(movie: movie)
+                        .frame(height: geo.size.height * 0.2)
+                        .listRowInsets(.init(top: 10, leading: 0, bottom: 10, trailing: 10))
+                        .onTapGesture {
+                            segue(movie: movie)
+                        }
+                        .padding(.vertical)
+                }
             }
+            .listStyle(.plain)
         }
-        .listStyle(.plain)
     }
     
     private func segue(movie: Movie) {

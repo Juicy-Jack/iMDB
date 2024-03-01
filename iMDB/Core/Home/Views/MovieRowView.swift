@@ -10,20 +10,21 @@ import SwiftUI
 struct MovieRowView: View {
     let movie: Movie
     var body: some View {
-        HStack {
-            if let posterPath = movie.posterPath {
-                AsyncImage(
-                    url: URL(string: "https://image.tmdb.org/t/p/original\(posterPath)"),
-                    content: { image in
-                        image
-                            .resizable()
-                            .scaledToFit()
-                            .frame(maxWidth: 70)
-                    }, placeholder: {
-                        ProgressView()
-                    })
+        GeometryReader { geo in
+            HStack {
+                AsyncUIImage(movie: movie, imageType: .poster)
+                    .frame(width: geo.size.width * 0.2)
+                
+                VStack(alignment: .leading) {
+                    Text(movie.title)
+                        .font(.headline)
+                    HStack(spacing: 2) {
+                        Image(systemName: "star.fill")
+                            .foregroundStyle(.yellow)
+                        Text(movie.voteAverage.asNumberString())
+                    }
+                }
             }
-            Text(movie.title ?? "")
         }
     }
 }
@@ -31,7 +32,7 @@ struct MovieRowView: View {
 #Preview {
     Group {
         let vm = HomeViewModel()
-        MovieRowView(movie: vm.exampleMovie)
+            MovieRowView(movie: vm.exampleMovie)
     }
 }
 

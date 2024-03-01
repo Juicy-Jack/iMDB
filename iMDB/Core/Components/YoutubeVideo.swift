@@ -9,9 +9,14 @@ import SwiftUI
 import WebKit
 
 struct YoutubeVideo: View {
-    let videoID: String
+    let videos: Videos?
     var body: some View {
-        YTVideo(videoID: videoID)
+        if (videos != nil) {
+            if (!(videos!.results.isEmpty)) {
+                let trailerKey = videos!.results[0].key
+                YTVideo(videoID: trailerKey!)
+            }
+        }
     }
 }
 
@@ -30,7 +35,8 @@ struct YTVideo: UIViewRepresentable {
         uiView.load(URLRequest(url: YouTubeURL))
     }
 }
-
+/*
 #Preview {
-    YoutubeVideo(videoID: "l91Km49W9qI")
+    YoutubeVideo(videos: )
 }
+*/

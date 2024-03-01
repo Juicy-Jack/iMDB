@@ -23,29 +23,77 @@ struct DetailsLoadingView: View {
 struct MovieDetailVeiw: View {
     
     @StateObject private var vm: DetailViewModel
+    private var release: Date
     
     init(movie: Movie) {
         _vm = StateObject(wrappedValue: DetailViewModel(movie: movie))
+        release = Date(dateString: movie.releaseDate)
     }
     
     var body: some View {
-        VStack {
-            if (vm.videos != nil) {
-                if !vm.videos!.results!.isEmpty {
-                    let trailerKey = vm.videos?.results?[0].key
-                    YTVideo(videoID: (trailerKey!))
+        
+        ScrollView {
+            ZStack (alignment: .topTrailing) {
+                VStack {
+                    AsyncUIImage(movie: vm.movie, imageType: .backdrop)
+                        .ignoresSafeArea()
+                        .mask(LinearGradient(gradient: Gradient(colors: [.black, .black, .black.opacity(0.8)]), startPoint: .top, endPoint: .bottom))
+                    
+                    Spacer()
+                    
+                    Text(vm.movieDetail?.overview ?? "")
+                        .padding()
+                    
+                    //YoutubeVideo(videos: vm.videos)
+                    
+                    if let genres = vm.movieDetail?.genres {
+                        ForEach(genres, id: \.name) { genre in
+                            Text(genre.name ?? "")
+                        }
+                    }
                 }
-            }
-            Text(vm.movieDetail?.overview ?? "")
-            if let genres = vm.movieDetail?.genres {
-                ForEach(genres, id: \.name) { genre in
-                    Text(genre.name ?? "")
+                
+                HStack {
+                    VStack {
+                        Text(vm.movie.title)
+                            .font(.headline)
+                            .foregroundStyle(.accent)
+                        
+                        HStack {
+                            Text(release.asShortDateString())
+                                .fontWeight(.light)
+                            
+                            Image(systemName: "circle.fill")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 4)
+                                .opacity(0.5)
+                            
+                            Text("\(vm.movieDetail?.runtime ?? 0) min.")
+                                .fontWeight(.light)
+                            
+                        }
+                        .font(.callout)
+                        .foregroundStyle(.accent)
+                    }
+                    .background(
+                        RoundedRectangle(cornerRadius: 5)
+                            .foregroundStyle(.black)
+                            .opacity(0.1))
+                    
+                    Spacer()
+                    
+                    AsyncUIImage(movie: vm.movie, imageType: .poster)
+                        .frame(width: 100)
                 }
+                .padding(.horizontal)
+                .alignmentGuide(VerticalAlignment.top) { _ in -100}
+                
+                Spacer()
             }
-
-        }
         }
     }
+}
 
 
 #Preview {

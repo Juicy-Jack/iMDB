@@ -9,7 +9,7 @@ import Foundation
 
 struct Videos: Codable {
     let id: Int?
-    let results: [Video]?
+    let results: [Video]
 }
 
 struct Video: Codable {

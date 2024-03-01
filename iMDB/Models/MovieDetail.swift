@@ -21,7 +21,7 @@ struct MovieDetail: Codable {
     let productionCompanies: [ProductionCompany]?
     let productionCountries: [ProductionCountry]?
     let releaseDate: String?
-    let revenue, runtime: Int?
+    let revenue, runtime: Int
     let spokenLanguages: [SpokenLanguage]?
     let status, tagline, title: String?
     let video: Bool?
