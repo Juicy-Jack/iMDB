@@ -46,7 +46,7 @@ struct AsyncUIImage: View {
     }
     
     enum ImageType {
-        case poster, backdrop
+        case poster, backdrop, profile
     }
 }
 

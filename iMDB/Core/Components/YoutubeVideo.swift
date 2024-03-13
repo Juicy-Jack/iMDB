@@ -15,6 +15,7 @@ struct YoutubeVideo: View {
             if (!(videos!.results.isEmpty)) {
                 let trailerKey = videos!.results[0].key
                 YTVideo(videoID: trailerKey!)
+                    .scaledToFit()
             }
         }
     }
