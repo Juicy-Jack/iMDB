@@ -23,12 +23,15 @@ struct DetailsLoadingView: View {
 struct MovieDetailVeiw: View {
     
     @State private var showFullDescription: Bool = false
-    @StateObject private var vm: DetailViewModel
+    @StateObject private var vm: MovieDetailViewModel
     private var release: Date
+    
     @State private var listType: ListType = .cast
+    @State private var selectedPersonID: Int? = nil
+    @State private var showPersonDetailView: Bool = false
     
     init(movie: Movie) {
-        _vm = StateObject(wrappedValue: DetailViewModel(movie: movie))
+        _vm = StateObject(wrappedValue: MovieDetailViewModel(movie: movie))
         release = Date(dateString: movie.releaseDate)
     }
     
@@ -57,7 +60,7 @@ struct MovieDetailVeiw: View {
                                 }
                             } label: {
                                 Text(showFullDescription ? "Less" : "Read more...")
-                                    .font(.caption)
+                                    .font(.subheadline)
                                     .fontWeight(.heavy)
                                     .foregroundStyle(.accent.opacity(((vm.movieDetail?.overview) != "") ? 1.0 : 0.0))
                             }
@@ -85,13 +88,19 @@ struct MovieDetailVeiw: View {
                         if listType == .cast {
                             if let cast = vm.credits?.cast {
                                 ForEach(cast, id: \.creditID) { cast in
-                                    CastRowView(cast: cast)
+                                        CastRowView(cast: cast)
+                                        .onTapGesture {
+                                            segue(personID: cast.id!)
+                                        }
                                 }
                             }
                         } else {
                             if let crew = vm.credits?.crew {
                                 ForEach(crew, id: \.creditID) { crew in
                                     CrewRowView(crew: crew)
+                                        .onTapGesture {
+                                            segue(personID: crew.id!)
+                                        }
                                 }
                             }
                         }
@@ -104,7 +113,7 @@ struct MovieDetailVeiw: View {
                                 .foregroundStyle(.accent)
                             
                             HStack {
-                                Text(release.asShortDateString())
+                                Text(release.asYearString())
                                     .fontWeight(.light)
                                 
                                 Image(systemName: "circle.fill")
@@ -158,6 +167,20 @@ struct MovieDetailVeiw: View {
                 }
             }
         }
+        .background(
+            NavigationLink(
+                destination: PersonDetailsLoadingView(personID: $selectedPersonID),
+                isActive: $showPersonDetailView,
+                label: { EmptyView() } )
+        )
+
+    }
+}
+
+extension MovieDetailVeiw {
+    private func segue(personID: Int) {
+        selectedPersonID = personID
+        showPersonDetailView.toggle()
     }
 }
 

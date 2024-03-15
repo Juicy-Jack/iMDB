@@ -9,10 +9,10 @@ import SwiftUI
 
 struct CastRowView: View {
     let cast: Cast
-    
+
     var body: some View {
         HStack(spacing: 5) {
-            AsyncCastProfileImage(cast: cast)
+            ProfileImage(imagePath: cast.profilePath ?? "")
                 .frame(width: 50)
             VStack(alignment: .leading) {
                 Text(cast.name!)
@@ -28,7 +28,7 @@ struct CastRowView: View {
 #Preview {
     Group {
         let hvm = HomeViewModel()
-        let dvm = DetailViewModel(movie: hvm.exampleMovie)
+        let dvm = MovieDetailViewModel(movie: hvm.exampleMovie)
         CastRowView(cast: dvm.exampleCredits.cast![0])
     }
 }

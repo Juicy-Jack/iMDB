@@ -23,7 +23,24 @@ extension Date {
         return formatter
     }
     
-    func asShortDateString() -> String {
+    var month: String {
+            let names = Calendar.current.monthSymbols
+            let month = Calendar.current.component(.month, from: self)
+            return names[month - 1]
+        }
+
+    
+    private var shortDateFormatter: DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "d MMM y"
+        return formatter
+    }
+    
+    func asYearString() -> String {
         return yearFormatter.string(from: self)
+    }
+    
+    func asShortDateFormatterString() ->String {
+        return shortDateFormatter.string(from: self)
     }
 }

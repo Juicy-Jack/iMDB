@@ -9,10 +9,11 @@ import SwiftUI
 
 struct CrewRowView: View {
     let crew: Crew
+
     
     var body: some View {
         HStack(spacing: 5) {
-            AsyncCrewProfileImage(crew: crew)
+            ProfileImage(imagePath: crew.profilePath ?? "")
                 .frame(width: 50)
             VStack(alignment: .leading) {
                 Text(crew.name!)
@@ -28,7 +29,7 @@ struct CrewRowView: View {
 #Preview {
     Group {
         let hvm = HomeViewModel()
-        let dvm = DetailViewModel(movie: hvm.exampleMovie)
+        let dvm = MovieDetailViewModel(movie: hvm.exampleMovie)
         CrewRowView(crew: dvm.exampleCredits.crew![0])
     }
 }

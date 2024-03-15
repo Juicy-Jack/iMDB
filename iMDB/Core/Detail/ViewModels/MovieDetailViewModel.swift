@@ -7,8 +7,9 @@
 
 import Foundation
 import Combine
+import SwiftUI
 
-class DetailViewModel: ObservableObject {
+class MovieDetailViewModel: ObservableObject {
     
     @Published var movie: Movie
     @Published var movieDetail: MovieDetail? = nil

@@ -22,11 +22,18 @@ struct AsyncUIImage: View {
                             .resizable()
                             .scaledToFit()
                     } else if phase.error != nil {
-                        Text("Image couldn't downloaded.")
+                        Image(systemName: "movieclapper.fill")
+                            .resizable()
+                            .scaledToFit()
                     } else {
                         ProgressView()
                     }
                 }
+            } else {
+                Image(systemName: "movieclapper.fill")
+                    .resizable()
+                    .scaledToFit()
+                
             }
         } else {
             if let backdropPath = movie.backdropPath {
@@ -36,11 +43,17 @@ struct AsyncUIImage: View {
                             .resizable()
                             .scaledToFit()
                     } else if phase.error != nil {
-                        Text("Image couldn't downloaded.")
+                        Image(systemName: "movieclapper.fill")
+                            .resizable()
+                            .scaledToFit()
                     } else {
                         ProgressView()
                     }
                 }
+            } else {
+                Image(systemName: "movieclapper.fill")
+                    .resizable()
+                    .scaledToFit()
             }
         }
     }

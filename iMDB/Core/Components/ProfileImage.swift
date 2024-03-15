@@ -1,5 +1,5 @@
 //
-//  AsyncCrewProfileImage.swift
+//  AsyncProfileImage.swift
 //  iMDB
 //
 //  Created by Furkan Doğan on 13.03.2024.
@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-struct AsyncCrewProfileImage: View {
-    let crew: Crew
+struct ProfileImage: View {
+    let imagePath: String
     
     var body: some View {
-        if let profilePath = crew.profilePath {
-            AsyncImage(url: URL(string: "https://image.tmdb.org/t/p/original\(profilePath)")) { phase in
+        if !imagePath.isEmpty {
+            AsyncImage(url: URL(string: "https://image.tmdb.org/t/p/original\(imagePath)")) { phase in
                 if let image = phase.image {
                     image
                         .resizable()
@@ -34,7 +34,7 @@ struct AsyncCrewProfileImage: View {
 #Preview {
     Group {
         let hvm = HomeViewModel()
-        let dvm = DetailViewModel(movie: hvm.exampleMovie)
-        AsyncCrewProfileImage(crew: dvm.exampleCredits.crew![0])
+        let dvm = MovieDetailViewModel(movie: hvm.exampleMovie)
+        ProfileImage(imagePath: dvm.exampleCredits.cast![0].profilePath!)
     }
 }

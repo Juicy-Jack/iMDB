@@ -10,7 +10,7 @@ import Combine
 
 class CreditsDataService {
     @Published var credits: Credits? = nil
-    var videoSubscription: AnyCancellable?
+    var creditsDetailSubscription: AnyCancellable?
     
     var movie: Movie
     
@@ -22,12 +22,12 @@ class CreditsDataService {
     func getCredits() {
         guard let url = URL(string: "https://api.themoviedb.org/3/movie/\(movie.id)/credits?language=en-US") else { return }
             
-        videoSubscription = NetworkingManager.download(url: url)
+        creditsDetailSubscription = NetworkingManager.download(url: url)
             .decode(type: Credits.self, decoder: JSONDecoder())
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: NetworkingManager.handleCompletion, receiveValue: { [weak self] (returnedCredits) in
                 self?.credits = returnedCredits
-                self?.videoSubscription?.cancel()
+                self?.creditsDetailSubscription?.cancel()
             })
     }
 }
