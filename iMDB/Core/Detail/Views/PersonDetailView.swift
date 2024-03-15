@@ -17,12 +17,12 @@ struct PersonDetailsLoadingView: View {
             }
         }
     }
-
+    
 }
 
 struct PersonDetailView: View {
     let personID: Int
-
+    
     @StateObject private var vm: PersonDetailViewModel
     @State private var showFullBiography: Bool = false
     
@@ -35,36 +35,48 @@ struct PersonDetailView: View {
         NavigationView {
             ScrollView {
                 VStack(alignment: .leading) {
-                    HStack {
-                        ProfileImage(imagePath: vm.person?.profilePath ?? "")
-                            .frame(height: 300)
-                            .padding(.leading, 4)
-                        VStack(alignment: .leading) {
-                            Text("Born \(Date(dateString: vm.person?.birthday ?? "").asShortDateFormatterString())")
-                                .fontWeight(.heavy)
-                            Text(vm.person?.placeOfBirth ?? "")
-                                .fontWeight(.medium)
-                                .foregroundStyle(.secondary)
-                        }
-                        .font(.caption)
-                    }
-                    VStack(alignment: .leading, spacing: 3) {
-                        Text(vm.person?.biography ?? "")
-                            .lineLimit(showFullBiography ? Int.max : 5)
-                        Text(showFullBiography ? "Less" : "Read more...")
-                            .font(.subheadline)
-                            .fontWeight(.heavy)
-                            .foregroundStyle(.accent.opacity(vm.person?.biography == nil ? 0 : 1))
-                            .onTapGesture {
-                                withAnimation(.easeInOut) {
-                                    showFullBiography.toggle()
-                                }
-                            }
-                    }
-                    .padding()
+                    imageAndDate
+                    
+                    biography
+                        .padding()
                 }
                 .navigationTitle((vm.person?.name ?? ""))
             }
+        }
+    }
+}
+
+extension PersonDetailView {
+    
+    private var imageAndDate: some View {
+        HStack {
+            ProfileImage(imagePath: vm.person?.profilePath ?? "")
+                .frame(height: 300)
+                .padding(.leading, 4)
+            VStack(alignment: .leading) {
+                Text("Born \(Date(dateString: vm.person?.birthday ?? "").asShortDateFormatterString())")
+                    .fontWeight(.heavy)
+                Text(vm.person?.placeOfBirth ?? "")
+                    .fontWeight(.medium)
+                    .foregroundStyle(.secondary)
+            }
+            .font(.caption)
+        }
+    }
+    
+    private var biography: some View {
+        VStack(alignment: .leading, spacing: 3) {
+            Text(vm.person?.biography ?? "")
+                .lineLimit(showFullBiography ? Int.max : 5)
+            Text(showFullBiography ? "Less" : "Read more...")
+                .font(.subheadline)
+                .fontWeight(.heavy)
+                .foregroundStyle(.accent.opacity(vm.person?.biography == nil ? 0 : 1))
+                .onTapGesture {
+                    withAnimation(.easeInOut) {
+                        showFullBiography.toggle()
+                    }
+                }
         }
     }
 }

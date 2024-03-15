@@ -16,30 +16,8 @@ struct HomeView: View {
     
     var body: some View {
         VStack {
-            HStack {
-                Image(systemName: "magnifyingglass")
-                    .padding(.leading)
-                    .foregroundStyle(vm.searchText.isEmpty ? Color.secondary : Color.accentColor)
-
-                TextField("Search Film", text: $vm.searchText)
-                    .foregroundStyle(.white)
-                    .padding()
-                    .overlay(
-                        Image(systemName: "xmark.circle.fill")
-                            .padding()
-                            .offset(x: 10)
-                            .opacity(vm.searchText.isEmpty ? 0 : 1)
-                            .onTapGesture {
-                                vm.searchText = ""
-                            }
-                        ,alignment: .trailing)
-            }
-            .background(
-                RoundedRectangle(cornerRadius: 25.0)
-                    .foregroundStyle(.gray)
-            )
+            searchBar
             .padding()
-
             
             allMoviesList
         }
@@ -57,6 +35,33 @@ struct HomeView: View {
 }
 
 extension HomeView {
+    
+    private var searchBar: some View {
+        HStack {
+            Image(systemName: "magnifyingglass")
+                .padding(.leading)
+                .foregroundStyle(vm.searchText.isEmpty ? Color.secondary : Color.accentColor)
+
+            TextField("Search Film", text: $vm.searchText)
+                .foregroundStyle(.white)
+                .padding()
+                .overlay(
+                    Image(systemName: "xmark.circle.fill")
+                        .padding()
+                        .offset(x: 10)
+                        .opacity(vm.searchText.isEmpty ? 0 : 1)
+                        .onTapGesture {
+                            vm.searchText = ""
+                        }
+                    ,alignment: .trailing)
+        }
+        .background(
+            RoundedRectangle(cornerRadius: 25.0)
+                .foregroundStyle(.gray)
+        )
+
+    }
+    
     private var allMoviesList: some View {
         GeometryReader { geo in
             List {
